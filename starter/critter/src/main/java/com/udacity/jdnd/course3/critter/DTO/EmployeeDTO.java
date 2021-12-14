@@ -1,4 +1,4 @@
-package com.udacity.jdnd.course3.critter.user;
+package com.udacity.jdnd.course3.critter.DTO;
 
 import com.udacity.jdnd.course3.critter.entity.EmployeeSkill;
 
