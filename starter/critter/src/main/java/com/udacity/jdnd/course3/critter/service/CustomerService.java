@@ -12,13 +12,13 @@ import java.util.Optional;
 @Service
 public class CustomerService {
     @Autowired
-    CustomerRepository customerRepository;
+    private CustomerRepository customerRepository;
 
-    Customer saveCustomer(Customer customer){
+    public Customer saveCustomer(Customer customer){
         return customerRepository.save(customer);
     }
 
-    Customer getCustomerById(Long id) throws Exception{
+    public Customer getCustomerById(Long id) throws Exception{
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
 
         if(optionalCustomer.isPresent()){
@@ -29,11 +29,11 @@ public class CustomerService {
         }
     }
 
-    List<Customer> getAllCustomers(){
+    public List<Customer> getAllCustomers(){
         return customerRepository.findAll();
     }
 
-    Customer getCustomerByPetId(Long id){
+    public Customer getCustomerByPetId(Long id){
         return customerRepository.getCustomerByPetId(id);
     }
 }
