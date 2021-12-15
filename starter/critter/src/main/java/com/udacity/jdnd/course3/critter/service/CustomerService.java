@@ -20,7 +20,7 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    public Customer getCustomerById(Long id) throws Exception{
+    public Customer getCustomerById(Long id) {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
 
         if(optionalCustomer.isPresent()){
