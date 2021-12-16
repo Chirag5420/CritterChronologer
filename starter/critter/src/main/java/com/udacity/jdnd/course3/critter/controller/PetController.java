@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.controller;
 
+import com.udacity.jdnd.course3.critter.DTO.CustomerDTO;
 import com.udacity.jdnd.course3.critter.DTO.PetDTO;
 import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Pet;
@@ -24,6 +25,9 @@ public class PetController {
     @Autowired
     CustomerService customerService;
 
+    @Autowired
+    UserController userController;
+
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
         Pet pet = convertDTOToPet(petDTO);
@@ -33,13 +37,21 @@ public class PetController {
             owner = customerService.getCustomerById(petDTO.getOwnerId());
             pet.setOwner(owner);
         }
-
         pet = petService.savePet(pet);
 
-        if(owner != null){
-            System.out.println("OWNER ID IS " + owner.getId());
-            owner.addPet(pet);
+        if(owner.getPets() == null){
+            List<Pet> petList = new ArrayList<>();
+            petList.add(pet);
+            owner.setPets(petList);
         }
+        else{
+            List<Pet> petList = owner.getPets();
+            petList.add(pet);
+            owner.setPets(petList);
+        }
+
+        CustomerDTO customerDTO = userController.convertCustomerToDTO(owner);
+        userController.saveCustomer(customerDTO);
 
         return convertPetToDTO(pet);
     }
@@ -77,7 +89,6 @@ public class PetController {
     public PetDTO convertPetToDTO(Pet pet){
         PetDTO petDTO = new PetDTO();
         BeanUtils.copyProperties(pet, petDTO);
-
         if(pet.getOwner() != null){
             petDTO.setOwnerId(pet.getOwner().getId());
         }

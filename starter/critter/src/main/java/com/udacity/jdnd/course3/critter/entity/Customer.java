@@ -23,10 +23,6 @@ public class Customer {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pet> pets;
 
-    public void addPet(Pet pet){
-        pets.add(pet);
-    }
-
     public long getId() {
         return id;
     }

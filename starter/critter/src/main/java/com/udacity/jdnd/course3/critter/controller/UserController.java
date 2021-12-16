@@ -61,7 +61,8 @@ public class UserController {
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
-        Customer customer = customerService.getCustomerByPetId(petId);
+        Pet pet = petService.getPet(petId);
+        Customer customer = pet.getOwner();
         return convertCustomerToDTO(customer);
     }
 
@@ -104,32 +105,35 @@ public class UserController {
     public CustomerDTO convertCustomerToDTO(Customer customer){
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
-        List<Pet> petList = customer.getPets();
         List<Long> petIds = new ArrayList<>();
 
-        if(petList.size() != 0){
+        if(customer.getPets() != null){
+            List<Pet> petList = customer.getPets();
             for(Pet p : petList){
                 petIds.add(p.getId());
             }
         }
 
         customerDTO.setPetIds(petIds);
+
         return customerDTO;
     }
 
     public Customer convertDTOToCustomer(CustomerDTO customerDTO){
         Customer customer = new Customer();
         BeanUtils.copyProperties(customerDTO, customer);
-        List<Long> petIds = customerDTO.getPetIds();
+
         List<Pet> petList = new ArrayList<>();
 
-        if(petIds.size()!= 0 && petIds!= null){
+        if(customerDTO.getPetIds() != null){
+            List<Long> petIds = customerDTO.getPetIds();
             for(Long id : petIds){
                 petList.add(petService.getPet(id));
             }
         }
 
         customer.setPets(petList);
+
         return customer;
     }
 

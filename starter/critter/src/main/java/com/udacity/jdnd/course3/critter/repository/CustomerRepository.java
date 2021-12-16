@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    @Query("SELECT c FROM customer c JOIN pet p WHERE p.id = :id")
-    Customer getCustomerByPetId(@Param("id") long petId);
+    @Query("SELECT c FROM Customer c JOIN c.pets p WHERE p.id = :id")
+    Customer findCustomerByPetId(@Param("id") long petId);
 }

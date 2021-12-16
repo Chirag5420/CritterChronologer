@@ -36,6 +36,6 @@ public class CustomerService {
     }
 
     public Customer getCustomerByPetId(Long id){
-        return customerRepository.getCustomerByPetId(id);
+        return customerRepository.findCustomerByPetId(id);
     }
 }
